@@ -1,5 +1,4 @@
-// FeedPage.js
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Container,
   Typography,
@@ -13,21 +12,44 @@ import {
 } from "@mui/material"
 import SendIcon from "@mui/icons-material/Send"
 import TopBar from "../topBar/TopBar"
+import { ref, onValue, getDatabase, push } from "firebase/database"
+import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
 
 const FeedPage = () => {
   const theme = useTheme()
   const primaryColor = theme.palette.primary.main
   const [thoughts, setThoughts] = useState([])
   const [newThought, setNewThought] = useState("")
-  const [userName, setUserName] = useState("Rusiru Gunaratene") // Set an initial value
+  const [userName, setUserName] = useState(getUsernameFromLocalStorage()) // Set an initial value
+  const db = getDatabase()
+
+  useEffect(() => {
+    const thoughtsRef = ref(db, "thoughts") // Assuming you have a "thoughts" collection
+
+    // Attach a listener to detect changes in the "thoughts" collection
+    const unsubscribe = onValue(thoughtsRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const thoughtsData = snapshot.val()
+        setThoughts(Object.values(thoughtsData))
+      }
+    })
+
+    // Cleanup the listener when the component is unmounted
+    return () => unsubscribe()
+  }, [])
 
   const handleAddThought = () => {
     if (newThought.trim() !== "") {
       const timestamp = new Date().toISOString()
-      setThoughts([
-        ...thoughts,
-        { sender: userName, content: newThought, timestamp },
-      ])
+      const newThoughtData = {
+        sender: userName,
+        content: newThought,
+        timestamp,
+      }
+
+      const thoughtsRef = ref(db, "thoughts") // Assuming you have a "thoughts" collection
+      push(thoughtsRef, newThoughtData)
+
       setNewThought("")
     }
   }
@@ -68,7 +90,10 @@ const FeedPage = () => {
       {sortedThoughts.map((thought, index) => (
         <Card
           key={index}
-          style={{ marginBottom: "16px", border: `2px solid ${primaryColor}` }}
+          style={{
+            marginBottom: "16px",
+            border: `2px solid ${primaryColor}`,
+          }}
         >
           <CardHeader
             avatar={
