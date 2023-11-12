@@ -22,9 +22,11 @@ import Diversity2Icon from "@mui/icons-material/Diversity2"
 import Logo from "../../assets/LogoPurple.png"
 import { useNavigate } from "react-router-dom"
 import QRCode from "react-qr-code"
+import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
 
-const TopBar = ({ hideTopBar }) => {
+const TopBar = () => {
   const [greeting, setGreeting] = useState("")
+  const [userName, setUserName] = useState(getUsernameFromLocalStorage())
   const [isQrDialogOpen, setQrDialogOpen] = useState(false)
   const navigate = useNavigate()
   const theme = useTheme()
@@ -44,10 +46,6 @@ const TopBar = ({ hideTopBar }) => {
 
   const currentPath = window.location.pathname
 
-  if (hideTopBar && hideTopBar.includes(currentPath)) {
-    return null
-  }
-
   const handleQrCodeClick = () => {
     setQrDialogOpen(true)
   }
@@ -57,7 +55,7 @@ const TopBar = ({ hideTopBar }) => {
   }
 
   // Assuming you have a function to get the user ID
-  const userId = "12345"
+  const userId = getUsernameFromLocalStorage()
 
   return (
     <Container>
@@ -91,7 +89,7 @@ const TopBar = ({ hideTopBar }) => {
           </Link>
           {!isSmallScreen && (
             <Typography variant='h6' style={{ flexGrow: 1 }}>
-              {greeting}, User's Name!
+              {greeting}, {userName}!
             </Typography>
           )}
           <IconButton color='inherit' onClick={handleQrCodeClick}>

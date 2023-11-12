@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import {
   Button,
   Container,
@@ -12,9 +12,14 @@ import {
   MenuItem,
 } from "@mui/material"
 import Logo from "../../assets/LogoPurple.png" // Update the path to your actual logo
+import { db } from "../../firebase"
+import { get, getDatabase, ref, set } from "firebase/database"
+import { toast } from "react-toastify"
 
 const SignUpPage = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     // Access form data using event.target
@@ -27,15 +32,39 @@ const SignUpPage = () => {
     const religion = event.target.religion.value
     const celebratedFestival = event.target.celebratedFestival.value
 
-    // Log the entered data to the console
-    console.log("First Name:", firstName)
-    console.log("Last Name:", lastName)
-    console.log("Username:", username)
-    console.log("Password:", password)
-    console.log("Email:", email)
-    console.log("Date of Birth:", dateOfBirth)
-    console.log("Religion:", religion)
-    console.log("Celebrated Festival:", celebratedFestival)
+    try {
+      // Get a reference to the "users" node in the database
+      const db = getDatabase()
+      const userRef = ref(db, "users/" + username)
+
+      // Check if the username already exists
+      const userSnapshot = await get(userRef)
+
+      if (userSnapshot.exists()) {
+        toast.error("Username already in use")
+      } else {
+        // Create a new user object
+        const newUser = {
+          firstName,
+          lastName,
+          username,
+          password,
+          email,
+          dateOfBirth,
+          religion,
+          celebratedFestival,
+        }
+
+        // Set the user data at that location
+        set(userRef, newUser)
+
+        toast.success("User added successfully")
+        // Navigate to the login page
+        navigate("/login")
+      }
+    } catch (error) {
+      toast.error("Error adding user: " + error.message)
+    }
   }
 
   return (

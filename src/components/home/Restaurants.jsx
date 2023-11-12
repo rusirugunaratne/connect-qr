@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   List,
   ListItem,
@@ -16,20 +16,60 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete"
 import FastfoodIcon from "@mui/icons-material/Fastfood"
 import AddIcon from "@mui/icons-material/Add"
+import { ref, set, get, getDatabase } from "firebase/database"
+import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
 
 const Restaurants = () => {
   const [restaurantList, setRestaurantList] = useState([])
   const [newRestaurant, setNewRestaurant] = useState("")
+  const username = getUsernameFromLocalStorage()
+  const db = getDatabase()
 
-  const handleDelete = (index) => {
+  useEffect(() => {
+    // Fetch restaurants from Firebase when the component mounts
+    const fetchData = async () => {
+      try {
+        const restaurantsRef = ref(db, `users/${username}/restaurants`)
+        const snapshot = await get(restaurantsRef)
+
+        if (snapshot.exists()) {
+          setRestaurantList(snapshot.val())
+        }
+      } catch (error) {
+        console.error("Error fetching restaurants:", error.message)
+      }
+    }
+
+    fetchData()
+  }, [username])
+
+  const handleDelete = async (index) => {
     const updatedRestaurants = [...restaurantList]
     updatedRestaurants.splice(index, 1)
     setRestaurantList(updatedRestaurants)
+
+    // Update the restaurants in Firebase
+    try {
+      const restaurantsRef = ref(db, `users/${username}/restaurants`)
+      await set(restaurantsRef, updatedRestaurants)
+    } catch (error) {
+      console.error("Error updating restaurants:", error.message)
+    }
   }
 
-  const handleAddRestaurant = () => {
+  const handleAddRestaurant = async () => {
     if (newRestaurant.trim() !== "") {
-      setRestaurantList([...restaurantList, newRestaurant])
+      const updatedRestaurants = [...restaurantList, newRestaurant]
+      setRestaurantList(updatedRestaurants)
+
+      // Add the new restaurant to Firebase
+      try {
+        const restaurantsRef = ref(db, `users/${username}/restaurants`)
+        await set(restaurantsRef, updatedRestaurants)
+      } catch (error) {
+        console.error("Error adding restaurant:", error.message)
+      }
+
       setNewRestaurant("")
     }
   }

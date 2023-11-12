@@ -1,5 +1,5 @@
 // Friends.js
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Container,
   Typography,
@@ -22,46 +22,57 @@ import TopBar from "../topBar/TopBar"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import { useNavigate } from "react-router-dom"
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
-
-const friendsData = [
-  {
-    id: 1,
-    name: "John Doe",
-    foodLikes: ["Pizza", "Burgers", "Ice Cream"],
-    birthday: "1990-05-15",
-    religion: "Christianity",
-    festivals: ["Christmas", "Easter"],
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    foodLikes: ["Pizza", "Burgers", "Ice Cream"],
-    birthday: "1990-05-15",
-    religion: "Christianity",
-    festivals: ["Christmas", "Easter"],
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    foodLikes: ["Pizza", "Burgers", "Ice Cream"],
-    birthday: "1990-05-15",
-    religion: "Christianity",
-    festivals: ["Christmas", "Easter"],
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    foodLikes: ["Pizza", "Burgers", "Ice Cream"],
-    birthday: "1990-05-15",
-    religion: "Christianity",
-    festivals: ["Christmas", "Easter"],
-  },
-  // Add more friends as needed
-]
+import { ref, get, getDatabase } from "firebase/database"
+import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
 
 const Friends = () => {
+  const [friends, setFriends] = useState([])
   const [selectedFriend, setSelectedFriend] = useState(null)
   const navigate = useNavigate()
+  const username = getUsernameFromLocalStorage()
+  const db = getDatabase()
+
+  const fetchFriendsDetails = async (friendUsernames) => {
+    const friendsDetails = []
+
+    for (const friendUsername of friendUsernames) {
+      try {
+        const friendDetailsRef = ref(db, `users/${friendUsername}`)
+        const friendDetailsSnapshot = await get(friendDetailsRef)
+
+        if (friendDetailsSnapshot.exists()) {
+          friendsDetails.push(friendDetailsSnapshot.val())
+        }
+      } catch (error) {
+        console.error("Error fetching friend details:", error.message)
+      }
+    }
+
+    return friendsDetails
+  }
+
+  console.log("friends", selectedFriend)
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const friendsRef = ref(db, `users/${username}/friends`)
+        const friendsSnapshot = await get(friendsRef)
+
+        if (friendsSnapshot.exists()) {
+          const friendUsernames = Object.values(friendsSnapshot.val())
+          const friendsDetails = await fetchFriendsDetails(friendUsernames)
+          setFriends(friendsDetails)
+        }
+      } catch (error) {
+        console.error("Error fetching friends:", error.message)
+      }
+    }
+
+    if (username) {
+      fetchFriends()
+    }
+  }, [username])
 
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend)
@@ -83,7 +94,7 @@ const Friends = () => {
         Friends
       </Typography>
       <List>
-        {friendsData.map((friend) => (
+        {friends.map((friend) => (
           <ListItem
             key={friend.id}
             button
@@ -92,7 +103,7 @@ const Friends = () => {
             <Avatar>
               <AccountCircleIcon />
             </Avatar>
-            <ListItemText primary={friend.name} />
+            <ListItemText primary={friend.firstName} />
           </ListItem>
         ))}
       </List>
@@ -101,28 +112,30 @@ const Friends = () => {
       <Dialog open={!!selectedFriend} onClose={handleCloseDialog}>
         {selectedFriend && (
           <>
-            <DialogTitle>{selectedFriend.name}</DialogTitle>
+            <DialogTitle>{selectedFriend.firstName}</DialogTitle>
             <DialogContent>
               <Card>
                 <CardHeader
-                  avatar={<Avatar>{selectedFriend.name.charAt(0)}</Avatar>}
-                  title={selectedFriend.name}
+                  avatar={<Avatar>{selectedFriend.firstName.charAt(0)}</Avatar>}
+                  title={selectedFriend.firstName}
                 />
                 <CardContent>
                   <Typography variant='body1'>
                     <strong>Food Likes:</strong>{" "}
-                    {selectedFriend.foodLikes.join(", ")}
+                    {selectedFriend.foodItems
+                      ? selectedFriend.foodItems.join(", ")
+                      : ""}
                   </Typography>
                   <Typography variant='body1'>
-                    <strong>Birthday:</strong> {selectedFriend.birthday}
+                    <strong>Birthday:</strong> {selectedFriend.dateOfBirth}
                   </Typography>
                   <Typography variant='body1'>
                     <strong>Religion:</strong> {selectedFriend.religion}
                   </Typography>
-                  <Typography variant='body1'>
+                  {/* <Typography variant='body1'>
                     <strong>Festivals:</strong>{" "}
-                    {selectedFriend.festivals.join(", ")}
-                  </Typography>
+                    {selectedFriend.celebratedFestival.join(", ")}
+                  </Typography> */}
                 </CardContent>
               </Card>
             </DialogContent>
@@ -146,4 +159,5 @@ const Friends = () => {
     </Container>
   )
 }
+
 export default Friends

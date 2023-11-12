@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   List,
   ListItem,
@@ -16,20 +16,60 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete"
 import FastfoodIcon from "@mui/icons-material/Fastfood"
 import AddIcon from "@mui/icons-material/Add"
+import { ref, set, get, push, getDatabase } from "firebase/database"
+import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
 
 const FoodItems = () => {
   const [foodItems, setFoodItems] = useState([])
   const [newItem, setNewItem] = useState("")
+  const username = getUsernameFromLocalStorage()
+  const db = getDatabase()
 
-  const handleDelete = (index) => {
+  useEffect(() => {
+    // Fetch food items from Firebase when the component mounts
+    const fetchData = async () => {
+      try {
+        const foodItemsRef = ref(db, `users/${username}/foodItems`)
+        const snapshot = await get(foodItemsRef)
+
+        if (snapshot.exists()) {
+          setFoodItems(snapshot.val())
+        }
+      } catch (error) {
+        console.error("Error fetching food items:", error.message)
+      }
+    }
+
+    fetchData()
+  }, [username])
+
+  const handleDelete = async (index) => {
     const updatedItems = [...foodItems]
     updatedItems.splice(index, 1)
     setFoodItems(updatedItems)
+
+    // Update the food items in Firebase
+    try {
+      const foodItemsRef = ref(db, `users/${username}/foodItems`)
+      await set(foodItemsRef, updatedItems)
+    } catch (error) {
+      console.error("Error updating food items:", error.message)
+    }
   }
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     if (newItem.trim() !== "") {
-      setFoodItems([...foodItems, newItem])
+      const updatedItems = [...foodItems, newItem]
+      setFoodItems(updatedItems)
+
+      // Add the new item to Firebase
+      try {
+        const foodItemsRef = ref(db, `users/${username}/foodItems`)
+        await set(foodItemsRef, updatedItems)
+      } catch (error) {
+        console.error("Error adding food item:", error.message)
+      }
+
       setNewItem("")
     }
   }

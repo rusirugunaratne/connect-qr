@@ -11,30 +11,16 @@ import Friends from "../components/friends/Friends"
 import AddFriendPage from "../components/friends/AddFriend"
 
 function AppRouter() {
-  const pathsToHideTopBar = ["/", "/login", "/signUp"]
-
   return (
     <>
       <BrowserRouter>
         <Routes>
-          {pathsToHideTopBar.map((path) => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                <TopBar hideTopBar={pathsToHideTopBar} currentPath={path} />
-              }
-            />
-          ))}
           <Route path='/' element={<GetStarted />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signUp' element={<SignUpPage />} />
 
           <Route path='/home' element={<HomePage />} />
-          <Route
-            path='/feed'
-            element={<FeedPage hideTopBar={pathsToHideTopBar} />}
-          />
+          <Route path='/feed' element={<FeedPage />} />
           <Route path='/friends' element={<Friends />} />
           <Route path='/add-friend' element={<AddFriendPage />} />
         </Routes>

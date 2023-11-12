@@ -14,7 +14,7 @@ import {
 import SendIcon from "@mui/icons-material/Send"
 import TopBar from "../topBar/TopBar"
 
-const FeedPage = ({ hideTopBar }) => {
+const FeedPage = () => {
   const theme = useTheme()
   const primaryColor = theme.palette.primary.main
   const [thoughts, setThoughts] = useState([])
@@ -39,7 +39,7 @@ const FeedPage = ({ hideTopBar }) => {
 
   return (
     <Container>
-      <TopBar hideTopBar={hideTopBar} currentPath='/feed' />
+      <TopBar />
       <Typography
         variant='h4'
         style={{ marginTop: "16px", marginBottom: "16px" }}

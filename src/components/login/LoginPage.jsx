@@ -1,10 +1,14 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button, Container, Typography, TextField, Grid } from "@mui/material"
 import Logo from "../../assets/LogoPurple.png" // Update the path to your actual logo
+import { toast } from "react-toastify"
+import { get, getDatabase, ref } from "firebase/database"
+import { saveUsernameToLocalStorage } from "../../localStorage/LocalStorage"
 
 const LoginPage = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate()
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     // Access form data using event.target
@@ -14,6 +18,30 @@ const LoginPage = () => {
     // Log the entered data to the console
     console.log("Username:", username)
     console.log("Password:", password)
+
+    try {
+      // Retrieve user from Firebase Realtime Database
+      const db = getDatabase()
+      const userRef = ref(db, `users/${username}`)
+      const snapshot = await get(userRef)
+
+      if (snapshot.exists()) {
+        const userData = snapshot.val()
+        // Check if the password matches
+        if (userData.password === password) {
+          saveUsernameToLocalStorage(username)
+          // Password is correct, navigate to the homepage
+          navigate("/home")
+        } else {
+          toast.error("Invalid Password")
+        }
+      } else {
+        toast.error("User not found")
+      }
+    } catch (error) {
+      toast.error("Error authenticating user:", error.message)
+      console.error("Error authenticating user:", error)
+    }
   }
 
   return (
