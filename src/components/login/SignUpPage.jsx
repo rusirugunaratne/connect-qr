@@ -161,24 +161,20 @@ const SignUpPage = () => {
                   <MenuItem value='christianity'>Christianity</MenuItem>
                   <MenuItem value='islam'>Islam</MenuItem>
                   <MenuItem value='hinduism'>Hinduism</MenuItem>
+                  <MenuItem value='hinduism'>Buddhism</MenuItem>
                   {/* Add more religions as needed */}
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl variant='outlined' required fullWidth>
-                <InputLabel id='celebratedFestival-label'>
-                  Celebrated Festival
-                </InputLabel>
-                <Select
-                  label='Celebrated Festival'
-                  id='celebratedFestival'
-                  name='celebratedFestival'
-                >
+                <InputLabel id='celebratedFestival-label'>Ethnicity</InputLabel>
+                <Select label='Ethnicity' id='ethnicity' name='ethnicity'>
                   {/* Add festivals based on selected religion */}
-                  <MenuItem value='easter'>Easter</MenuItem>
-                  <MenuItem value='ramadan'>Ramadan</MenuItem>
-                  <MenuItem value='diwali'>Diwali</MenuItem>
+                  <MenuItem value='sinhalese'>Sinhalese</MenuItem>
+                  <MenuItem value='tamil'>Tamil</MenuItem>
+                  <MenuItem value='muslim'>Muslim</MenuItem>
+                  <MenuItem value='burgher'>Burgher</MenuItem>
                   {/* Add more festivals as needed */}
                 </Select>
               </FormControl>
