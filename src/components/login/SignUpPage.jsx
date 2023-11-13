@@ -77,7 +77,11 @@ const SignUpPage = () => {
           marginTop: "64px",
         }}
       >
-        <img src={Logo} alt='React Logo' width={400} />
+        <img
+          src={Logo}
+          alt='React Logo'
+          style={{ maxWidth: "100%", width: "auto", height: "auto" }}
+        />
         <Typography component='h1' variant='h5' style={{ marginTop: "16px" }}>
           Get Started
         </Typography>
