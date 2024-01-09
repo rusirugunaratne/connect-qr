@@ -15,6 +15,7 @@ import Logo from "../../assets/LogoPurple.png" // Update the path to your actual
 import { db } from "../../firebase"
 import { get, getDatabase, ref, set } from "firebase/database"
 import { toast } from "react-toastify"
+import { saveUsernameToLocalStorage } from "../../localStorage/LocalStorage"
 
 const SignUpPage = () => {
   const navigate = useNavigate()
@@ -128,10 +129,9 @@ const SignUpPage = () => {
                 variant='outlined'
                 required
                 fullWidth
-                name='password'
-                label='Password'
-                type='password'
-                id='password'
+                id='email'
+                label='Email Address'
+                name='email'
               />
             </Grid>
             <Grid item xs={12}>
@@ -139,11 +139,13 @@ const SignUpPage = () => {
                 variant='outlined'
                 required
                 fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 InputLabelProps={{ shrink: true }}
@@ -164,6 +166,7 @@ const SignUpPage = () => {
                   <MenuItem value='islam'>Islam</MenuItem>
                   <MenuItem value='hinduism'>Hinduism</MenuItem>
                   <MenuItem value='hinduism'>Buddhism</MenuItem>
+                  <MenuItem value='other'>Other</MenuItem>
                   {/* Add more religions as needed */}
                 </Select>
               </FormControl>
@@ -177,6 +180,7 @@ const SignUpPage = () => {
                   <MenuItem value='tamil'>Tamil</MenuItem>
                   <MenuItem value='muslim'>Muslim</MenuItem>
                   <MenuItem value='burgher'>Burgher</MenuItem>
+                  <MenuItem value='other'>Other</MenuItem>
                   {/* Add more festivals as needed */}
                 </Select>
               </FormControl>
