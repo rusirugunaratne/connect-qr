@@ -8,6 +8,7 @@ import {
   filterFestivalsByMonth,
   religionFestivals,
 } from "../../constants/festivals"
+import notification from "../../assets/manageNotifications.jpg"
 
 function NotificationPage() {
   const username = getUsernameFromLocalStorage()
@@ -153,6 +154,7 @@ function NotificationPage() {
   return (
     <>
       <TopBar />
+      <img src={notification} alt='' style={{ maxWidth: "100%" }} />
       <Typography mb={2} mt={5} variant='h4'>
         Birthdays
       </Typography>

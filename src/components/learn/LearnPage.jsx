@@ -12,6 +12,7 @@ import {
   religionFestivals,
 } from "../../constants/festivals"
 import TopBar from "../topBar/TopBar"
+import learnImage from "../../assets/learnImage.jpg"
 
 const FestivalComponent = ({ festivals }) => {
   return (
@@ -49,6 +50,7 @@ const LearnPage = () => {
   return (
     <Box p={4}>
       <TopBar />
+      <img src={learnImage} alt='' style={{ maxWidth: "100%" }} />
       <Box mt={4} mb={4}>
         <Typography mb={4} variant='h4'>
           Filter by Ethnicity

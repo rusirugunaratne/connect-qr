@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom"
 import QRCode from "react-qr-code"
 import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
+import LightbulbIcon from "@mui/icons-material/Lightbulb"
 
 const TopBar = () => {
   const [greeting, setGreeting] = useState("")
@@ -86,6 +87,11 @@ const TopBar = () => {
           <Link href='/friends' color='inherit' underline='none'>
             <IconButton color='inherit'>
               <Diversity2Icon />
+            </IconButton>
+          </Link>
+          <Link href='/learn' color='inherit' underline='none'>
+            <IconButton color='inherit'>
+              <LightbulbIcon />
             </IconButton>
           </Link>
           <Link href='/profile' color='inherit' underline='none'>

@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom"
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { ref, get, getDatabase } from "firebase/database"
 import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
+import friendsImage from "../../assets/manageFriends.jpg"
 
 const Friends = () => {
   const [friends, setFriends] = useState([])
@@ -90,6 +91,7 @@ const Friends = () => {
   return (
     <Container>
       <TopBar />
+      <img src={friendsImage} alt='' style={{ maxWidth: "100%" }} />
       <Typography variant='h4' style={{ marginTop: "16px" }}>
         Friends
       </Typography>

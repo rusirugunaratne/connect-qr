@@ -8,6 +8,7 @@ import { get, getDatabase, ref, set } from "firebase/database"
 import { Button, Typography } from "@mui/material"
 import TopBar from "../topBar/TopBar"
 import { toast } from "react-toastify"
+import profile from "../../assets/manageProfile.jpg"
 
 const ProfilePage = () => {
   const [selectedFestivals, setSelectedFestivals] = useState([])
@@ -78,6 +79,7 @@ const ProfilePage = () => {
   return (
     <div>
       <TopBar />
+      <img src={profile} alt='' style={{ maxWidth: "100%" }} />
       <h2>Your Celebrations Based on Ethnicity</h2>
       {Object.keys(ethnicityFestivals).map((ethnicity) => (
         <div key={ethnicity}>

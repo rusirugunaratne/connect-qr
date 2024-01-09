@@ -14,6 +14,7 @@ import SendIcon from "@mui/icons-material/Send"
 import TopBar from "../topBar/TopBar"
 import { ref, onValue, getDatabase, push } from "firebase/database"
 import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
+import feed from "../../assets/shareThoughts.jpg"
 
 const FeedPage = () => {
   const theme = useTheme()
@@ -62,6 +63,7 @@ const FeedPage = () => {
   return (
     <Container>
       <TopBar />
+      <img src={feed} alt='' style={{ maxWidth: "100%" }} />
       <Typography
         variant='h4'
         style={{ marginTop: "16px", marginBottom: "16px" }}
