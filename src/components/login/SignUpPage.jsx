@@ -22,6 +22,8 @@ const SignUpPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    console.log("evt", event.target.firstName.value)
+
     // Access form data using event.target
     const firstName = event.target.firstName.value
     const lastName = event.target.lastName.value
@@ -30,7 +32,7 @@ const SignUpPage = () => {
     const email = event.target.email.value
     const dateOfBirth = event.target.dateOfBirth.value
     const religion = event.target.religion.value
-    const celebratedFestival = event.target.celebratedFestival.value
+    const ethnicity = event.target.ethnicity.value
 
     try {
       // Get a reference to the "users" node in the database
@@ -52,7 +54,7 @@ const SignUpPage = () => {
           email,
           dateOfBirth,
           religion,
-          celebratedFestival,
+          ethnicity,
         }
 
         // Set the user data at that location
@@ -60,7 +62,7 @@ const SignUpPage = () => {
 
         toast.success("User added successfully")
         // Navigate to the login page
-        navigate("/login")
+        navigate("/home")
       }
     } catch (error) {
       toast.error("Error adding user: " + error.message)

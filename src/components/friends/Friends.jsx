@@ -99,6 +99,7 @@ const Friends = () => {
             key={friend.id}
             button
             onClick={() => handleFriendClick(friend)}
+            sx={{ bgcolor: "lightblue", padding: 2, mb: 2 }}
           >
             <Avatar>
               <AccountCircleIcon />

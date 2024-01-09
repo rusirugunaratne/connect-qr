@@ -9,6 +9,8 @@ import TopBar from "../components/topBar/TopBar"
 import FeedPage from "../components/feed/FeedPage"
 import Friends from "../components/friends/Friends"
 import AddFriendPage from "../components/friends/AddFriend"
+import ProfilePage from "../components/profile/Profile"
+import NotificationPage from "../components/notification/NotificationPage"
 
 function AppRouter() {
   return (
@@ -22,6 +24,8 @@ function AppRouter() {
           <Route path='/home' element={<HomePage />} />
           <Route path='/feed' element={<FeedPage />} />
           <Route path='/friends' element={<Friends />} />
+          <Route path='/notifications' element={<NotificationPage />} />
+          <Route path='/profile' element={<ProfilePage />} />
           <Route path='/add-friend' element={<AddFriendPage />} />
         </Routes>
       </BrowserRouter>

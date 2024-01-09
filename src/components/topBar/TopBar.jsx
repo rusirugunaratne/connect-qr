@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Badge,
 } from "@mui/material"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import QrCodeIcon from "@mui/icons-material/QrCode"
@@ -23,6 +24,7 @@ import Logo from "../../assets/LogoPurple.png"
 import { useNavigate } from "react-router-dom"
 import QRCode from "react-qr-code"
 import { getUsernameFromLocalStorage } from "../../localStorage/LocalStorage"
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 
 const TopBar = () => {
   const [greeting, setGreeting] = useState("")
@@ -66,15 +68,14 @@ const TopBar = () => {
       />
       <AppBar position='static'>
         <Toolbar>
-          <IconButton
-            color='inherit'
-            onClick={() => console.log("Go to notifications page")}
-          >
-            <NotificationsIcon />
-          </IconButton>
           <Link href='/home' color='inherit' underline='none'>
             <IconButton color='inherit'>
               <HomeIcon />
+            </IconButton>
+          </Link>
+          <Link href='/notifications' color='inherit' underline='none'>
+            <IconButton color='inherit'>
+              <NotificationsIcon />
             </IconButton>
           </Link>
           <Link href='/feed' color='inherit' underline='none'>
@@ -85,6 +86,11 @@ const TopBar = () => {
           <Link href='/friends' color='inherit' underline='none'>
             <IconButton color='inherit'>
               <Diversity2Icon />
+            </IconButton>
+          </Link>
+          <Link href='/profile' color='inherit' underline='none'>
+            <IconButton color='inherit'>
+              <AccountCircleIcon />
             </IconButton>
           </Link>
           {!isSmallScreen && (
