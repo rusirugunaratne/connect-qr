@@ -11,6 +11,7 @@ import Friends from "../components/friends/Friends"
 import AddFriendPage from "../components/friends/AddFriend"
 import ProfilePage from "../components/profile/Profile"
 import NotificationPage from "../components/notification/NotificationPage"
+import LearnPage from "../components/learn/LearnPage"
 
 function AppRouter() {
   return (
@@ -26,6 +27,7 @@ function AppRouter() {
           <Route path='/friends' element={<Friends />} />
           <Route path='/notifications' element={<NotificationPage />} />
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/learn' element={<LearnPage />} />
           <Route path='/add-friend' element={<AddFriendPage />} />
         </Routes>
       </BrowserRouter>

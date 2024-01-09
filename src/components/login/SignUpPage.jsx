@@ -59,7 +59,7 @@ const SignUpPage = () => {
 
         // Set the user data at that location
         set(userRef, newUser)
-
+        saveUsernameToLocalStorage(username)
         toast.success("User added successfully")
         // Navigate to the login page
         navigate("/home")

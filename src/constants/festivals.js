@@ -1,38 +1,38 @@
-const festivalsList = [
-    {
-        name: "Diwali",
-        date: "2023-10-25",
-        details: "Festival of lights",
-        wishes: "Wishing you a bright and joyful Diwali!",
-    },
-    {
-        name: "Holi",
-        date: "2023-03-10",
-        details: "Festival of colors",
-        wishes: "May your life be as colorful as Holi!",
-    },
-    // Add more festivals as needed
-];
+// const festivalsList = [
+//     {
+//         name: "Diwali",
+//         date: "2023-10-25",
+//         details: "Festival of lights",
+//         wishes: "Wishing you a bright and joyful Diwali!",
+//     },
+//     {
+//         name: "Holi",
+//         date: "2023-03-10",
+//         details: "Festival of colors",
+//         wishes: "May your life be as colorful as Holi!",
+//     },
+//     // Add more festivals as needed
+// ];
 
-const religionsWithFestivals = [
-    {
-        religion: "Hinduism",
-        festivals: festivalsList,
-    },
-    {
-        religion: "Christianity",
-        festivals: [
-            {
-                name: "Christmas",
-                date: "2023-12-25",
-                details: "Celebration of the birth of Jesus Christ",
-                wishes: "Merry Christmas and a Happy New Year!",
-            },
-            // Add more festivals as needed
-        ],
-    },
-    // Add more religions with festivals as needed
-];
+// const religionsWithFestivals = [
+//     {
+//         religion: "Hinduism",
+//         festivals: festivalsList,
+//     },
+//     {
+//         religion: "Christianity",
+//         festivals: [
+//             {
+//                 name: "Christmas",
+//                 date: "2023-12-25",
+//                 details: "Celebration of the birth of Jesus Christ",
+//                 wishes: "Merry Christmas and a Happy New Year!",
+//             },
+//             // Add more festivals as needed
+//         ],
+//     },
+//     // Add more religions with festivals as needed
+// ];
 
 export const ethnicityFestivals = {
     Sinhalese: {
@@ -301,3 +301,39 @@ export const religionFestivals = {
     }
     // Add more religions with their festivals as needed
 };
+
+
+export const filterFestivalsByMonth = (festivals, currentMonth) => {
+    const filteredFestivals = [];
+
+    for (const ethnicity in festivals) {
+        festivals[ethnicity].festivals.forEach((festival) => {
+            const festivalMonths = festival.festivalMonth.split('/').map((month) => month.trim());
+
+            if (festivalMonths.includes(currentMonth)) {
+                filteredFestivals.push({
+                    ethnicity,
+                    festival: {
+                        festivalName: festival.festivalName,
+                        festivalMonth: festival.festivalMonth,
+                        festivalDay: festival.festivalDay,
+                        festivalDescription: festival.festivalDescription,
+                        importance: festival.importance,
+                        howToGreet: festival.howToGreet,
+                    },
+                });
+            }
+        });
+    }
+
+    return filteredFestivals;
+};
+
+
+// [{
+//     festival:{
+//         festivalName:
+//         ...and other festival details
+//         friendsCelebrating: [array of friends names]
+//     }
+// }]

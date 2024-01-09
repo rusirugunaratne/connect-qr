@@ -42,7 +42,7 @@ const HomePage = () => {
           item
           md={3}
           xs={6}
-          onClick={() => handleClick("/profile")}
+          onClick={() => handleClick("/learn")}
           style={{ cursor: "pointer" }}
         >
           <img
